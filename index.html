@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriDoc Link</title>
+    <script>
+      // Fix for "Cannot set property fetch of #<Window> which has only a getter"
+      // This happens because window.fetch is read-only in the AI Studio preview iframe.
+      (function() {
+        try {
+          const descriptor = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (descriptor && !descriptor.writable && !descriptor.set) {
+            if (descriptor.configurable) {
+              let currentFetch = window.fetch;
+              Object.defineProperty(window, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function() { return currentFetch; },
+                set: function(v) { 
+                  currentFetch = v;
+                  console.info("window.fetch has been updated by a third-party script.");
+                }
+              });
+            } else {
+              console.warn("window.fetch is non-configurable. Libraries attempting to overwrite it will fail. Alaising polyfills in bundler is recommended.");
+            }
+          }
+        } catch (e) {
+          console.error("Failed to re-define window.fetch:", e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

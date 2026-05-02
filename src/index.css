@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Hind Siliguri", "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 2.5rem;
+
+  --color-brand-green: #065f46;
+  --color-brand-light-green: #10b981;
+  --color-brand-yellow: #f59e0b;
+  --color-brand-earth: #78350f;
+  --color-brand-white: #ffffff;
+  --color-brand-bg: #ecfdf5;
+  --color-brand-dark: #064e3b;
+
+  --shadow-glow: 0 0 30px rgba(6, 95, 70, 0.2);
+  --shadow-glow-blue: 0 0 30px rgba(59, 130, 246, 0.15);
+}
+
+@layer base {
+  body {
+    @apply bg-emerald-50 text-emerald-950 font-sans antialiased overflow-x-hidden;
+    background-color: #ecfdf5;
+    background-image: 
+      radial-gradient(circle at top right, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .font-display {
+    @apply font-display tracking-tight text-emerald-950 font-black uppercase;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/95 backdrop-blur-2xl border border-emerald-100 shadow-xl;
+  }
+  
+  .glass-card {
+    @apply bg-white border border-emerald-50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-emerald-200;
+  }
+
+  .btn-primary {
+    @apply bg-emerald-700 hover:bg-emerald-800 text-white font-black py-4 px-8 rounded-3xl transition-all duration-500 transform hover:scale-[1.03] active:scale-95 shadow-xl flex items-center justify-center gap-3 uppercase tracking-widest text-sm border-b-4 border-emerald-950;
+  }
+
+  .btn-secondary {
+    @apply bg-emerald-950 hover:bg-black text-white font-black py-4 px-8 rounded-3xl transition-all duration-300 shadow-lg tracking-widest uppercase text-xs;
+  }
+}
+
+@keyframes slide-up-soft {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up-soft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.agri-input {
+  @apply bg-white border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-green text-slate-900 placeholder-slate-400 transition-all font-bold;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
