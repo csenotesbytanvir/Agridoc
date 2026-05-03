@@ -36,7 +36,18 @@ export async function getGeminiResponse(apiKey: string, prompt: string, language
       }
     });
     
-    return response.text || "No response received.";
+    // In v2 SDK, text property is a getter that might throw if call was blocked
+    let responseText = "No response received.";
+    try {
+      responseText = response.text || "No text in response.";
+    } catch (e) {
+      console.warn("Could not get response text:", e);
+      if (response.candidates && response.candidates.length > 0) {
+        responseText = response.candidates[0].content?.parts?.find(p => p.text)?.text || "Content blocked or empty.";
+      }
+    }
+    
+    return responseText;
   } catch (error) {
     console.error("Gemini Error:", error);
     throw error;
@@ -47,22 +58,27 @@ export async function analyzePlantDisease(apiKey: string, base64Image: string, l
   try {
     const ai = getAI(apiKey);
     
+    const promptText = `Identify the plant and any diseases from this image. 
+    You MUST return JSON with these exact keys:
+    "plantName": name of the plant,
+    "diseaseName": name of the disease or "Healthy",
+    "treatment": step-by-step treatment,
+    "medicines": recommended organic/chemical inputs,
+    "soilType": ideal soil conditions,
+    "irrigationNeeds": water requirements,
+    "careInstructions": additional care tips,
+    "additionalInfo": any other relevant facts.
+    
+    IMPORTANT: Respond strictly in ${language === 'bn' ? 'Bengali (বাংলা)' : 'English'}.
+    Do NOT include markdown markers like \`\`\`json. Return only the raw JSON.`;
+
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [{
+        role: "user",
         parts: [
           { inlineData: { mimeType: "image/jpeg", data: base64Image } },
-          { text: `Identify the plant and any diseases. Return JSON with these exact keys:
-          1. plantName: The common name of the plant.
-          2. diseaseName: The name of the disease identified.
-          3. treatment: Step-by-step mitigation protocol.
-          4. medicines: Specific recommended medicines or nutrients.
-          5. soilType: Ideal substrate specs.
-          6. irrigationNeeds: Hydration protocol.
-          7. careInstructions: Strategic care and lifestyle advice.
-          8. additionalInfo: More related information for the farmer.
-          
-          Language: ${language === 'bn' ? 'Bengali' : 'English'}.` }
+          { text: promptText }
         ]
       }],
       config: {
@@ -70,7 +86,52 @@ export async function analyzePlantDisease(apiKey: string, base64Image: string, l
       }
     });
 
-    return JSON.parse(response.text || '{}');
+    let rawText = "";
+    try {
+      rawText = (response.text || "").trim();
+    } catch (e) {
+      console.warn("Could not get JSON response text:", e);
+      if (response.candidates && response.candidates.length > 0) {
+        rawText = response.candidates[0].content?.parts?.find(p => p.text)?.text || "";
+      }
+    }
+    
+    // Fallback cleaning if JSON is wrapped in code blocks
+    if (rawText.includes('```')) {
+      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+    }
+
+    if (!rawText) {
+      throw new Error("Empty response from matrix.");
+    }
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseError) {
+      console.warn("JSON Parse failed, attempting fallback extraction", rawText);
+      // Try to find the first '{' and last '}'
+      const firstBrace = rawText.indexOf('{');
+      const lastBrace = rawText.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        data = JSON.parse(rawText.substring(firstBrace, lastBrace + 1));
+      } else {
+        throw parseError;
+      }
+    }
+    
+    const fallback = {
+      plantName: language === 'bn' ? 'অজানা উদ্ভিদ' : 'Unknown Plant',
+      diseaseName: language === 'bn' ? 'নির্ণয় করা যায়নি' : 'Healthy / Undertermined',
+      treatment: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available',
+      medicines: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available',
+      soilType: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available',
+      irrigationNeeds: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available',
+      careInstructions: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available',
+      additionalInfo: language === 'bn' ? 'কোন তথ্য নেই' : 'No data available'
+    };
+
+    return { ...fallback, ...data };
   } catch (error) {
     console.error("Analysis Error:", error);
     throw error;
@@ -87,7 +148,17 @@ export async function validateApiKey(apiKey: string) {
       model: "gemini-3-flash-preview",
       contents: "Reply 'OK'"
     });
-    return response.text?.includes('OK') || false;
+    
+    let text = "";
+    try {
+      text = response.text || "";
+    } catch (e) {
+      if (response.candidates && response.candidates.length > 0) {
+        text = response.candidates[0].content?.parts?.find(p => p.text)?.text || "";
+      }
+    }
+    
+    return text.includes('OK');
   } catch (error) {
     return false;
   }

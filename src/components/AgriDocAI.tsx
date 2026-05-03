@@ -435,18 +435,23 @@ const AIAnalysis = () => {
   const runAnalysis = async () => {
     if (!image || loading) return;
     setLoading(true);
+    setResult(null); // Clear previous result
     try {
       const base64 = image.split(',')[1];
       const data = await analyzePlantDisease(state.apiKey, base64, state.language);
+      console.log("Analysis Data Received:", data);
       setResult(data);
       addPoints(50);
       speakResult(data);
-    } catch (err) {
-      alert("Spectral scan failed. Verify Neural Link and environmental conditions.");
+    } catch (err: any) {
+      console.error("Analysis Component Error:", err);
+      alert(`Critical Scan Error: ${err.message || "Unknown spectral anomaly"}`);
     } finally {
       setLoading(false);
     }
   };
+
+  const hasResultData = result && Object.keys(result).length > 0;
 
   return (
     <div className="space-y-10">
@@ -471,17 +476,22 @@ const AIAnalysis = () => {
           <input type="file" ref={fileRef} onChange={handleUpload} className="hidden" accept="image/*" />
         </div>
 
-        {image && !result && (
+        {image && !hasResultData && (
           <button 
             onClick={runAnalysis}
             disabled={loading}
             className="btn-primary w-full py-6 sm:py-8 text-xl sm:text-2xl tracking-tighter shadow-2xl"
           >
-            {loading ? <Loader2 className="animate-spin mx-auto" size={40} /> : "Initiate AI Diagnosis Protocol"}
+            {loading ? (
+              <div className="flex items-center gap-4">
+                <Loader2 className="animate-spin" size={32} />
+                <span>Scanning Matrix...</span>
+              </div>
+            ) : "Initiate AI Diagnosis Protocol"}
           </button>
         )}
 
-        {result && (
+        {hasResultData && (
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-12 border-t border-emerald-100 pt-10 sm:pt-12">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
