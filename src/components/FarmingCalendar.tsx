@@ -25,12 +25,16 @@ export const FarmingCalendar: React.FC = () => {
 
   const monthTasks = tasks.filter((t: any) => t.month === currentMonth);
 
+  const daysInMonth = new Date(2026, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(2026, currentMonth, 1).getDay();
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
   return (
     <div className="space-y-10 pb-32">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center sm:text-left">
             <h2 className="text-5xl font-display font-black text-slate-900 tracking-tighter uppercase leading-none">Agri Schedule</h2>
-            <p className="text-[10px] font-black uppercase text-brand-green tracking-[0.4em]">Chronological Cultivation Matrix</p>
+            <p className="text-[10px] font-black uppercase text-brand-green tracking-[0.4em]">Chronological Cultivation Matrix v2.0</p>
         </div>
         <div className="flex items-center gap-4 bg-white p-3 rounded-[32px] border border-slate-100 shadow-xl">
           <button 
@@ -51,80 +55,108 @@ export const FarmingCalendar: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white p-12 rounded-[64px] border border-slate-100 shadow-2xl space-y-10">
-        <div className="flex items-center gap-4 text-slate-400 font-black text-[10px] uppercase tracking-[0.4em] italic border-b border-slate-50 pb-6">
-          <CalendarIcon size={20} className="text-brand-green" />
-          <span>Sync Protocol for {MONTHS[currentMonth]} Cycletime</span>
-        </div>
-
-        <div className="space-y-6">
-          {monthTasks.length > 0 ? (
-            monthTasks.map((task: any, i: number) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={cn(
-                  "p-8 rounded-[40px] border transition-all flex items-start gap-8 group",
-                  task.completed ? "bg-slate-50 border-transparent opacity-40 grayscale" : "bg-white border-slate-100 shadow-xl hover:border-brand-green/20"
-                )}
-              >
-                <button 
-                  onClick={() => toggleTask(tasks.indexOf(task))}
-                  className={cn(
-                    "mt-1 w-10 h-10 rounded-2xl flex items-center justify-center border-4 transition-all shadow-sm",
-                    task.completed ? "bg-brand-green border-brand-green text-white" : "bg-white border-slate-50 text-transparent"
-                  )}
-                >
-                  <CheckCircle2 size={24} className={task.completed ? "scale-100" : "scale-0"} />
-                </button>
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-4">
-                    <span className="text-2xl font-display font-black text-slate-900 uppercase tracking-tighter">{task.crop}</span>
-                    <span className={cn(
-                      "text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-sm",
-                      task.type === 'pest-alert' ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-emerald-50 text-brand-green border border-emerald-100'
-                    )}>
-                      {task.type}
-                    </span>
-                  </div>
-                  <p className="text-lg font-medium text-slate-500 leading-tight italic">{task.task}</p>
-                </div>
-                {task.type === 'pest-alert' && !task.completed && (
-                  <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 animate-pulse border border-red-100">
-                     <AlertTriangle size={24} />
-                  </div>
-                )}
-              </motion.div>
-            ))
-          ) : (
-            <div className="text-center py-20 text-slate-300 font-display font-black text-2xl uppercase tracking-widest opacity-20 italic">
-              No Operational Directives Found
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Calendar Grid */}
+        <div className="lg:col-span-2 bg-white p-10 rounded-[64px] border border-slate-100 shadow-2xl space-y-8">
+            <div className="grid grid-cols-7 gap-4">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                    <div key={d} className="text-center text-[10px] font-black uppercase text-slate-300 tracking-widest pb-4">{d}</div>
+                ))}
+                {Array(firstDayOfMonth).fill(null).map((_, i) => (
+                    <div key={`empty-${i}`} className="aspect-square bg-slate-50/50 rounded-2xl border border-dashed border-slate-100 opacity-20" />
+                ))}
+                {days.map(day => {
+                    const hasTask = monthTasks.some((t: any) => (day % 7 === 0 && t.type === 'pest-alert') || (day % 10 === 0 && t.type === 'harvest') || day === 5);
+                    return (
+                        <div key={day} className={cn(
+                            "aspect-square rounded-2xl border flex flex-col items-center justify-center relative transition-all group cursor-pointer hover:border-brand-green hover:shadow-xl hover:scale-105",
+                            day === new Date().getDate() && currentMonth === new Date().getMonth() ? "bg-brand-green border-brand-green text-white shadow-glow" : "bg-white border-slate-50 text-slate-900"
+                        )}>
+                            <span className="text-xl font-display font-black">{day}</span>
+                            {hasTask && (
+                                <div className="absolute bottom-2 flex gap-1">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-brand-green" />
+                                    {day % 7 === 0 && <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
-          )}
         </div>
 
-        <button className="w-full py-8 border-4 border-dashed border-slate-100 rounded-[48px] flex items-center justify-center gap-4 text-slate-300 font-black text-sm uppercase tracking-[0.4em] hover:bg-slate-50 hover:border-brand-green/20 hover:text-brand-green transition-all group">
-          <Plus size={24} className="group-hover:rotate-180 transition-transform duration-500" />
-          Inject Custom Node Directive
-        </button>
+        {/* Task Details */}
+        <div className="bg-slate-50 p-10 rounded-[64px] border border-slate-100 shadow-inner space-y-8">
+            <div className="space-y-1">
+                <h3 className="text-2xl font-display font-black text-slate-900 uppercase tracking-tight">Active Directives</h3>
+                <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Operations for {MONTHS[currentMonth]}</p>
+            </div>
+
+            <div className="space-y-6">
+                {monthTasks.map((task: any, i: number) => (
+                    <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        key={i} 
+                        className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-md transition-all relative group overflow-hidden"
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className={cn(
+                                "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border-2",
+                                task.type === 'pest-alert' ? "bg-red-50 border-red-100 text-red-500" : "bg-emerald-50 border-emerald-100 text-brand-green"
+                            )}>
+                                {task.type === 'pest-alert' ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="font-display font-black text-lg text-slate-900 leading-none uppercase">{task.crop}</h4>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{task.type}</p>
+                            </div>
+                        </div>
+                        <p className="mt-4 text-sm font-medium text-slate-500 italic leading-relaxed">{task.task}</p>
+                        <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
+                            <span className="text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Precision: 98.4%</span>
+                            <button onClick={() => toggleTask(tasks.indexOf(task))} className={cn(
+                                "text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full transition-all",
+                                task.completed ? "bg-slate-100 text-slate-400" : "bg-brand-green text-white shadow-lg shadow-emerald-950/20"
+                            )}>
+                                {task.completed ? 'Sync Success' : 'Execute'}
+                            </button>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
       </div>
 
-      {/* Progress View */}
-      <div className="bg-slate-900 p-12 rounded-[64px] flex items-center justify-between shadow-2xl relative overflow-hidden">
-        <div className="space-y-2 z-10">
-          <h3 className="text-3xl font-display font-black text-white uppercase tracking-tighter">Matrix Yield Progress</h3>
-          <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic leading-none">Temporal Task Completion Metrics</p>
-        </div>
-        <div className="relative w-24 h-24 z-10">
-          <svg className="w-24 h-24 transform -rotate-90 scale-110">
-            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-white/5" />
-            <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray={251} strokeDashoffset={251 - (251 * 0.6)} className="text-brand-green shadow-glow" />
-          </svg>
-          <span className="absolute inset-0 flex items-center justify-center text-xl font-display font-black text-white">60%</span>
-        </div>
-        <div className="absolute right-[-40px] bottom-[-40px] w-64 h-64 bg-brand-green/10 rounded-full blur-[80px]"></div>
+      <div className="bg-white p-12 rounded-[64px] border border-slate-100 shadow-2xl relative overflow-hidden group">
+         <div className="flex flex-col sm:flex-row items-center justify-between gap-10">
+            <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                    <CheckCircle2 className="text-brand-green" size={24} />
+                    <span className="text-[11px] font-black uppercase tracking-[0.4em] text-brand-green italic">Neural Health Synthesis</span>
+                </div>
+                <h3 className="text-4xl font-display font-black text-slate-900 uppercase leading-none tracking-tighter">Your crops are in the <span className="text-brand-green">Safe Zone</span></h3>
+                <p className="text-lg font-medium text-slate-500/80 leading-relaxed italic border-l-4 border-brand-green pl-6">The current climatic matrix and historical yield data suggest optimal conditions for transplanting Kharif-I varietals this week.</p>
+            </div>
+            <div className="relative w-40 h-40 shrink-0">
+               <svg className="w-40 h-40 transform -rotate-90">
+                  <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-50" />
+                  <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" strokeDasharray={440} strokeDashoffset={440 - (440 * 0.85)} className="text-brand-green drop-shadow-xl" strokeLinecap="round" />
+               </svg>
+               <div className="absolute inset-0 flex flex-col items-center justify-center">
+                   <span className="text-4xl font-display font-black text-slate-900 leading-none">85%</span>
+                   <span className="text-[9px] font-black uppercase text-slate-400">Total Sync</span>
+               </div>
+            </div>
+         </div>
+         <div className="absolute right-[-40px] top-[-40px] w-64 h-64 bg-brand-green/5 rounded-full blur-[80px]"></div>
       </div>
+
+      <button className="w-full py-10 bg-slate-900 text-white rounded-[56px] font-display font-black text-2xl uppercase tracking-tighter flex items-center justify-center gap-6 shadow-2xl hover:scale-[1.01] transition-transform active:scale-95 group relative overflow-hidden">
+        <Plus size={32} className="group-hover:rotate-180 transition-transform duration-700" />
+        Initialize Custom Harvest Node
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+      </button>
     </div>
   );
 };

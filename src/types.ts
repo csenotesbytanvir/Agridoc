@@ -12,7 +12,7 @@ export interface AppState {
   isDemoMode: boolean;
 }
 
-export type PageId = 'home' | 'farmgram' | 'agridoc-ai' | 'profile' | 'offline-toolkit' | 'market-insights' | 'experts' | 'pest-map' | 'sustainability' | 'iot-dashboard' | 'yield-predictor' | 'gamification';
+export type PageId = 'home' | 'farmgram' | 'agridoc-ai' | 'profile' | 'offline-toolkit' | 'market-insights' | 'experts' | 'pest-map' | 'sustainability' | 'iot-dashboard' | 'yield-predictor' | 'gamification' | 'crop-registry';
 
 export interface Plant {
   id: string;

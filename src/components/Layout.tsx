@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Share2, MessageSquare, User, Globe, Cloud, LogOut, Zap, Sprout, Users, Leaf } from 'lucide-react';
+import { Home, Share2, MessageSquare, User, Globe, Cloud, LogOut, Zap, Sprout, Users, Leaf, Bug } from 'lucide-react';
 import { useAgriDoc } from '../App';
 import { translations } from '../translations';
 import { cn } from '../lib/utils';
@@ -22,7 +22,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </div>
         </div>
 
-        <nav className="flex-1 space-y-3 overflow-y-auto pr-2 scrollbar-hide">
+        <nav className="flex-1 space-y-3 overflow-y-auto pr-2 min-h-0 [scrollbar-width:thin] [overflow-anchor:none] pb-10">
           <SidebarBtn 
             active={state.currentPage === 'home'} 
             onClick={() => setPage('home')} 
@@ -40,6 +40,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             onClick={() => setPage('agridoc-ai')} 
             icon={<Zap />} 
             label={t.nav.agridocAi} 
+          />
+          <SidebarBtn 
+            active={state.currentPage === 'pest-map'} 
+            onClick={() => setPage('pest-map')} 
+            icon={<Bug />} 
+            label="Pathogen Radar" 
           />
           <SidebarBtn 
             active={state.currentPage === 'market-insights'} 
@@ -65,6 +71,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             icon={<User />} 
             label={t.nav.profile} 
           />
+          <div className="md:hidden">
+             {/* Only show extra spacing for mobile if needed, but nav itself is for desktop aside */}
+          </div>
         </nav>
 
         <div className="mt-12 space-y-6 pt-6 border-t border-white/10">
@@ -162,7 +171,7 @@ const SidebarBtn = ({ active, onClick, icon, label }: any) => (
     )}
   >
     <span className={cn("transition-transform group-hover:scale-110", active && "text-white")}>
-      {React.cloneElement(icon as React.ReactElement, { size: 20, strokeWidth: active ? 3 : 2 })}
+      {React.cloneElement(icon as React.ReactElement<any>, { size: 20, strokeWidth: active ? 3 : 2 })}
     </span>
     <span className="flex-1 text-left">{label}</span>
   </button>
@@ -176,6 +185,6 @@ const MobileNavBtn = ({ active, onClick, icon }: any) => (
       active ? "bg-emerald-50 text-emerald-600 shadow-inner scale-110" : "text-emerald-200 hover:text-emerald-400"
     )}
   >
-    {React.cloneElement(icon as React.ReactElement, { size: 24, strokeWidth: active ? 3 : 2 })}
+    {React.cloneElement(icon as React.ReactElement<any>, { size: 24, strokeWidth: active ? 3 : 2 })}
   </button>
 );

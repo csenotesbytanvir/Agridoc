@@ -32,7 +32,8 @@ export const ProfileSettings: React.FC = () => {
     farmName: localStorage.getItem('agri_profile_farm') || 'Green Valley Estates',
     location: localStorage.getItem('agri_profile_loc') || 'Dhaka, Bangladesh',
     primaryCrop: localStorage.getItem('agri_profile_crop') || 'Rice & Jute',
-    farmSize: localStorage.getItem('agri_profile_size') || '5.5 Acres'
+    farmSize: localStorage.getItem('agri_profile_size') || '5.5 Acres',
+    avatar: localStorage.getItem('agri_profile_avatar') || `https://api.dicebear.com/7.x/avataaars/svg?seed=${localStorage.getItem('agri_profile_name') || 'Tanvir Ahmmed'}`
   });
 
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -40,13 +41,28 @@ export const ProfileSettings: React.FC = () => {
   const [apiKey, setApiKey] = useState(state.apiKey);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
   const saveProfile = () => {
     localStorage.setItem('agri_profile_name', profile.name);
     localStorage.setItem('agri_profile_farm', profile.farmName);
     localStorage.setItem('agri_profile_loc', profile.location);
     localStorage.setItem('agri_profile_crop', profile.primaryCrop);
     localStorage.setItem('agri_profile_size', profile.farmSize);
+    localStorage.setItem('agri_profile_avatar', profile.avatar);
     setIsEditing(false);
+  };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile({ ...profile, avatar: reader.result as string });
+        localStorage.setItem('agri_profile_avatar', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSaveKey = async () => {
@@ -77,6 +93,13 @@ export const ProfileSettings: React.FC = () => {
 
   return (
     <div className="space-y-10 pb-32 animate-in fade-in slide-in-from-bottom-6 duration-700">
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        className="hidden" 
+        accept="image/*" 
+        onChange={handleAvatarChange} 
+      />
       <AnimatePresence>
         {showToast && (
           <motion.div 
@@ -113,13 +136,16 @@ export const ProfileSettings: React.FC = () => {
           <div className="relative">
             <div className="w-40 h-40 rounded-full border-4 border-emerald-50 p-2 bg-emerald-50 shadow-inner group-hover:scale-105 transition-transform">
               <img 
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`} 
-                className="w-full h-full rounded-full bg-white shadow-xl" 
+                src={profile.avatar} 
+                className="w-full h-full rounded-full bg-white shadow-xl object-cover" 
                 alt="Avatar"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <button className="absolute bottom-2 right-2 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center border-4 border-white shadow-xl hover:scale-110 transition-transform">
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute bottom-2 right-2 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center border-4 border-white shadow-xl hover:scale-110 transition-transform"
+            >
               <Camera size={24} className="text-white" />
             </button>
           </div>
@@ -458,7 +484,7 @@ const SettingsItem = ({ icon, title, sub, action }: any) => (
   <div className="p-10 flex items-center justify-between hover:bg-emerald-50 transition-all group border-l-[12px] border-transparent hover:border-emerald-500">
     <div className="flex items-center gap-8">
       <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center border-2 border-emerald-50 shadow-lg group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all group-hover:rotate-6">
-        {React.cloneElement(icon as React.ReactElement, { size: 28 })}
+        {React.cloneElement(icon as React.ReactElement<any>, { size: 28 })}
       </div>
       <div>
         <h4 className="font-black text-emerald-950 text-2xl uppercase tracking-tighter leading-none italic">{title}</h4>

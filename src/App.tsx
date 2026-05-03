@@ -306,7 +306,7 @@ const CapabilityCard = ({ onClick, icon, title, desc, color, iconColor }: any) =
     className="bg-white p-10 rounded-[64px] border border-emerald-50 shadow-xl text-left space-y-6 hover:shadow-2xl transition-all group active:scale-[0.98]"
   >
     <div className={cn("w-16 h-16 rounded-[24px] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform", color)}>
-       {React.cloneElement(icon as React.ReactElement, { size: 32, className: iconColor || "text-white" })}
+       {React.cloneElement(icon as React.ReactElement<any>, { size: 32, className: iconColor || "text-white" })}
     </div>
     <div className="space-y-2">
        <h4 className="text-2xl font-display font-black text-emerald-950 uppercase tracking-tighter leading-none">{title}</h4>
@@ -321,7 +321,7 @@ const ServiceCard = ({ onClick, icon, title, sub }: any) => (
     className="p-10 bg-white border border-slate-100 rounded-[48px] hover:bg-emerald-50 transition-all text-left flex flex-col items-center justify-center gap-6 group relative overflow-hidden text-center hover:border-brand-green/20 shadow-xl active:scale-[0.98]"
   >
     <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center group-hover:scale-110 transition-all duration-700 border border-slate-100 group-hover:bg-brand-green group-hover:text-white group-hover:shadow-glow/20">
-      {React.cloneElement(icon as React.ReactElement, { size: 32 })}
+      {React.cloneElement(icon as React.ReactElement<any>, { size: 32 })}
     </div>
     <div className="space-y-2">
       <span className="block text-xl font-display font-black text-slate-900 tracking-tight uppercase">{title}</span>

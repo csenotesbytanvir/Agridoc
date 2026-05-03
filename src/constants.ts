@@ -13,8 +13,8 @@ export const PLANTS: Plant[] = [
     soilPh: '5.5 - 6.5',
     diseases: ['Blast', 'Blight', 'Stem Borer'],
     companionPlants: ['Soybean', 'Azolla'],
-    image: 'https://picsum.photos/seed/rice/400/300',
-    description: 'A staple food for more than half of the worlds population.'
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=2070&auto=format&fit=crop',
+    description: 'A staple food for more than half of the worlds population. Essential cereal grain.'
   },
   {
     id: 'tomato',
@@ -28,8 +28,8 @@ export const PLANTS: Plant[] = [
     soilPh: '6.0 - 6.8',
     diseases: ['Early Blight', 'Late Blight', 'Leaf Mold'],
     companionPlants: ['Basil', 'Marigold', 'Onion'],
-    image: 'https://picsum.photos/seed/tomato/400/300',
-    description: 'Versatile and popular garden vegetable.'
+    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=1974&auto=format&fit=crop',
+    description: 'Versatile and popular garden vegetable. Requires consistent moisture.'
   },
   {
     id: 'mango',
@@ -43,8 +43,8 @@ export const PLANTS: Plant[] = [
     soilPh: '5.5 - 7.5',
     diseases: ['Anthracnose', 'Powdery Mildew'],
     companionPlants: ['Guava', 'Banana'],
-    image: 'https://picsum.photos/seed/mango/400/300',
-    description: 'The king of fruits, popular in South Asia.'
+    image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=1974&auto=format&fit=crop',
+    description: 'The king of fruits, popular in South Asia. Tall perennial trees.'
   },
   {
     id: 'chili',
@@ -58,8 +58,8 @@ export const PLANTS: Plant[] = [
     soilPh: '6.0 - 7.0',
     diseases: ['Damping off', 'Anthracnose', 'Leaf Curl'],
     companionPlants: ['Tomato', 'Basil'],
-    image: 'https://picsum.photos/seed/chili/400/300',
-    description: 'Used for spice and heat in various cuisines.'
+    image: 'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?q=80&w=1964&auto=format&fit=crop',
+    description: 'Used for spice and heat in various cuisines. Rich in Vitamin C.'
   },
   {
     id: 'cucumber',
@@ -73,8 +73,8 @@ export const PLANTS: Plant[] = [
     soilPh: '6.0 - 7.0',
     diseases: ['Powdery Mildew', 'Mosaic Virus'],
     companionPlants: ['Corn', 'Bean', 'Peas'],
-    image: 'https://picsum.photos/seed/cucumber/400/300',
-    description: 'Refreshing and fast-growing climbing plant.'
+    image: 'https://images.unsplash.com/photo-1596560548464-f01068e3ad50?q=80&w=1974&auto=format&fit=crop',
+    description: 'Refreshing and fast-growing climbing plant. High hydration requirement.'
   },
   {
     id: 'potato',
@@ -88,26 +88,28 @@ export const PLANTS: Plant[] = [
     soilPh: '5.0 - 6.0',
     diseases: ['Late Blight', 'Common Scab'],
     companionPlants: ['Marigold', 'Corn'],
-    image: 'https://picsum.photos/seed/potato/400/300',
-    description: 'Underground tuberous crop, essential for global food security.'
+    image: 'https://images.unsplash.com/photo-1590165482129-1b8b27698780?q=80&w=1974&auto=format&fit=crop',
+    description: 'Underground tuberous crop, essential for global food security. Winter Rabi season.'
   }
 ];
 
 export const CALENDAR_DATA: any[] = [
-  { month: 0, crop: 'Rice', task: 'Boro season: Prepare seedling nursery and soil pilling.', type: 'sow', care: 'Keep water level low at first.' },
-  { month: 0, crop: 'Potato', task: 'Monitor for Late Blight due to foggy mornings.', type: 'pest-alert', care: 'Apply preventative fungicide.' },
-  { month: 1, crop: 'Rice', task: 'Transplant seedlings and ensure primary irrigation.', type: 'transplant', care: 'Maintain 2-3cm water layer.' },
-  { month: 1, crop: 'Tomato', task: 'Harvest early winter crops.', type: 'harvest' },
-  { month: 2, crop: 'Mango', task: 'Flowering stage: Apply hopper control protocols.', type: 'pest-alert', care: 'Avoid irrigation during full bloom.' },
-  { month: 2, crop: 'Tomato', task: 'Apply organic fertilizer and basal mulch.', type: 'fertilize' },
-  { month: 3, crop: 'Mango', task: 'Fruit setting: Start regular hydration cycles.', type: 'irrigate' },
-  { month: 4, crop: 'Chili', task: 'Sow Kharif-I seeds in well-drained trays.', type: 'sow', care: 'Use organic seed treatment.' },
-  { month: 5, crop: 'Rice', task: 'Aus season: Direct sowing of upland varieties.', type: 'sow' },
-  { month: 5, crop: 'Jute', task: 'Intercultural operations and thinning.', type: 'prune' },
-  { month: 6, crop: 'Rice', task: 'Harvest Boro crops in sunny windows.', type: 'harvest' },
-  { month: 7, crop: 'Rice', task: 'Aman season: Seedbed preparation with compost.', type: 'sow' },
-  { month: 8, crop: 'Rice', task: 'Transplant Aman seedlings amid monsoon rains.', type: 'transplant' },
-  { month: 9, crop: 'Mango', task: 'Post-harvest pruning and nutrient loading.', type: 'prune' },
-  { month: 10, crop: 'Vegetables', task: 'Sow winter vegetables (Rabi season).', type: 'sow', care: 'Protect from excess heat.' },
-  { month: 11, crop: 'Potato', task: 'Planting of main season tubers.', type: 'sow', care: 'Use certified seed tubers.' },
+  { month: 0, crop: 'Rice (Boro)', task: 'Sowing in nursery beds. Soil pilling for moisture retention.', type: 'sow', care: 'Keep water level low at first. Use organic compost.' },
+  { month: 0, crop: 'Potato', task: 'Monitor for Late Blight due to foggy mornings.', type: 'pest-alert', care: 'Apply preventative fungicide. Ensure drainage.' },
+  { month: 1, crop: 'Rice (Boro)', task: 'Transplanting seedlings to main field.', type: 'transplant', care: 'Maintain 2-3cm water layer. Monitor pH.' },
+  { month: 1, crop: 'Tomato', task: 'Harvesting peak season winter varieties.', type: 'harvest', care: 'Grade based on size and color ripeness.' },
+  { month: 2, crop: 'Mango', task: 'Flowering stage: Critical for pest management.', type: 'pest-alert', care: 'Apply hopper control protocols. Avoid heavy watering.' },
+  { month: 2, crop: 'Tomato', task: 'Soil nutrition: Applying vermicompost.', type: 'fertilize', care: 'Stake heavy fruiting branches.' },
+  { month: 3, crop: 'Mango', task: 'Fruit setting: High urea requirement.', type: 'irrigate', care: 'Start regular hydration cycles every 3 days.' },
+  { month: 3, crop: 'Jute', task: 'Land preparation and base fertilization.', type: 'sow', care: 'Ensure soil is fine-textured.' },
+  { month: 4, crop: 'Chili', task: 'Summer sowing in well-drained nursery trays.', type: 'sow', care: 'Use organic seed treatment (Neem based).' },
+  { month: 4, crop: 'Cucumber', task: 'Sowing for warm season harvest.', type: 'sow', care: 'Provide bamboo trellises for climbing.' },
+  { month: 5, crop: 'Rice (Aus)', task: 'Direct sowing in upland regions.', type: 'sow', care: 'Monitor for weeds early on.' },
+  { month: 5, crop: 'Jute', task: 'First weeding and thinning operations.', type: 'prune', care: 'Maintain 10cm distance between plants.' },
+  { month: 6, crop: 'Rice (Boro)', task: 'Major harvest window across regions.', type: 'harvest', care: 'Dry grains to 12% moisture level.' },
+  { month: 7, crop: 'Rice (Aman)', task: 'Seedbed preparation for monsoon season.', type: 'sow', care: 'Elevate seedbeds to prevent flooding.' },
+  { month: 8, crop: 'Rice (Aman)', task: 'Transplanting during heavy monsoon.', type: 'transplant', care: 'Ensure proper drainage channels are open.' },
+  { month: 9, crop: 'Mango', task: 'Post-harvest maintenance and pruning.', type: 'prune', care: 'Remove dead branches and apply fungicide.' },
+  { month: 10, crop: 'Vegetables', task: 'Winter (Rabi) season sowing starts.', type: 'sow', care: 'Cabbage, Broccoli, Carrots sowing window.' },
+  { month: 11, crop: 'Potato', task: 'Main season planting for spring harvest.', type: 'sow', care: 'Use certified seed tubers only.' },
 ];

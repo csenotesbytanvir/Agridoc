@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAgriDoc } from '../App';
 import { PestReport } from '../types';
-import { Bug, AlertTriangle, Info, MapPin, Plus } from 'lucide-react';
+import { Bug, AlertTriangle, Info, MapPin, Plus, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 // Fix for Leaflet default icon issues in React
@@ -17,11 +17,12 @@ L.Icon.Default.mergeOptions({
 });
 
 const DUMMY_REPORTS: PestReport[] = [
-  { id: '1', lat: 23.8103, lng: 90.4125, crop: 'Rice', pest: 'Brown Planthopper', severity: 'high', reportedAt: new Date().toISOString(), reporterName: 'Tanvir' },
-  { id: '2', lat: 13.7563, lng: 100.5018, crop: 'Mango', pest: 'Fruit Fly', severity: 'medium', reportedAt: new Date().toISOString(), reporterName: 'Somchai' },
-  { id: '3', lat: 39.9334, lng: 32.8597, crop: 'Wheat', pest: 'Rust', severity: 'low', reportedAt: new Date().toISOString(), reporterName: 'Ahmet' },
-  { id: '4', lat: 24.3745, lng: 88.6042, crop: 'Chili', pest: 'Thrips', severity: 'high', reportedAt: new Date().toISOString(), reporterName: 'Karim' },
-  { id: '5', lat: 18.7883, lng: 98.9853, crop: 'Tomato', pest: 'Leaf Miner', severity: 'medium', reportedAt: new Date().toISOString(), reporterName: 'Sireena' },
+  { id: '1', lat: 23.8103, lng: 90.4125, crop: 'Rice', pest: 'Brown Planthopper', severity: 'high', reportedAt: new Date().toISOString(), reporterName: 'Dhaka' },
+  { id: '2', lat: 24.3745, lng: 88.6042, crop: 'Chili', pest: 'Thrips', severity: 'high', reportedAt: new Date().toISOString(), reporterName: 'Rajshahi' },
+  { id: '3', lat: 24.8949, lng: 91.8687, crop: 'Tea', pest: 'Red Mite', severity: 'medium', reportedAt: new Date().toISOString(), reporterName: 'Sylhet' },
+  { id: '4', lat: 22.3569, lng: 91.7832, crop: 'Banana', pest: 'Wilting', severity: 'low', reportedAt: new Date().toISOString(), reporterName: 'Chittagong' },
+  { id: '5', lat: 25.7439, lng: 89.2752, crop: 'Potato', pest: 'Late Blight', severity: 'high', reportedAt: new Date().toISOString(), reporterName: 'Rangpur' },
+  { id: '6', lat: 22.8456, lng: 89.5403, crop: 'Jute', pest: 'Hairy Caterpillar', severity: 'medium', reportedAt: new Date().toISOString(), reporterName: 'Khulna' },
 ];
 
 export const PestMap: React.FC = () => {
@@ -31,11 +32,16 @@ export const PestMap: React.FC = () => {
     return local ? JSON.parse(local) : DUMMY_REPORTS;
   });
   const [isAdding, setIsAdding] = useState(false);
+  const [selectedDistrict, setSelectedDistrict] = useState('All Regions');
   const [newReport, setNewReport] = useState<{ crop: string; pest: string; severity: any }>({
     crop: 'Rice',
     pest: '',
     severity: 'medium'
   });
+
+  const districts = ['All Regions', 'Dhaka', 'Rajshahi', 'Rangpur', 'Sylhet', 'Chittagong', 'Khulna', 'Barishal', 'Mymensingh'];
+  
+  const filteredReports = selectedDistrict === 'All Regions' ? reports : reports.filter(r => r.reporterName === selectedDistrict);
 
   useEffect(() => {
     localStorage.setItem('agri_pest_reports', JSON.stringify(reports));
@@ -51,11 +57,34 @@ export const PestMap: React.FC = () => {
       pest: newReport.pest || 'Unknown Pest',
       severity: newReport.severity,
       reportedAt: new Date().toISOString(),
-      reporterName: 'Me'
+      reporterName: 'Me (Verified)'
     };
     setReports([...reports, report]);
     setIsAdding(false);
     addPoints(30);
+  };
+
+  const deleteReport = (id: string) => {
+    setReports(reports.filter(r => r.id !== id));
+  };
+
+  const updateReport = (id: string, updates: Partial<PestReport>) => {
+    setReports(reports.map(r => r.id === id ? { ...r, ...updates } : r));
+  };
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editValues, setEditValues] = useState({ crop: '', pest: '', severity: 'medium' as any });
+
+  const startEdit = (report: PestReport) => {
+    setEditingId(report.id);
+    setEditValues({ crop: report.crop, pest: report.pest, severity: report.severity });
+  };
+
+  const saveEdit = () => {
+    if (editingId) {
+      updateReport(editingId, editValues);
+      setEditingId(null);
+    }
   };
 
   return (
@@ -63,9 +92,16 @@ export const PestMap: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="space-y-4">
           <h2 className="text-5xl font-display font-black text-emerald-950 tracking-tighter uppercase leading-none italic">Pathogen Radar</h2>
-          <p className="text-[10px] font-black uppercase text-emerald-600 tracking-[0.4em]">Real-time Global Incursion Mapping</p>
+          <p className="text-[10px] font-black uppercase text-emerald-600 tracking-[0.4em]">District-Level Bio-Threat Surveillance</p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
+          <select 
+            className="bg-white border-4 border-emerald-100 rounded-[28px] pl-10 pr-12 py-5 font-black uppercase text-xs tracking-widest text-emerald-950 outline-none focus:ring-8 focus:ring-emerald-500/10 shadow-2xl appearance-none cursor-pointer transition-all hover:border-emerald-300"
+            value={selectedDistrict}
+            onChange={(e) => setSelectedDistrict(e.target.value)}
+          >
+            {districts.map(d => <option key={d} value={d}>{d} Matrix</option>)}
+          </select>
           <button 
             onClick={() => setIsAdding(!isAdding)}
             className={cn(
@@ -119,14 +155,18 @@ export const PestMap: React.FC = () => {
         </div>
       )}
 
-      <div className="flex-1 min-h-[500px] rounded-[64px] overflow-hidden border-8 border-white shadow-2xl relative shadow-glow">
-        <MapContainer center={[20, 90]} zoom={4} style={{ height: '100%', width: '100%' }}>
+      <div className="bg-white p-4 rounded-[64px] border border-slate-100 shadow-2xl overflow-hidden relative shadow-glow h-[60vh] min-h-[600px] z-10">
+        <MapContainer 
+          center={[23.6850, 90.3563]} 
+          zoom={7} 
+          style={{ height: '100%', width: '100%', borderRadius: '48px' }}
+        >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <MapEventsHandler onMapClick={handleMapClick} />
-          {reports.map((report) => (
+          {filteredReports.map((report) => (
             <Marker key={report.id} position={[report.lat, report.lng]} icon={getPestIcon(report.severity)}>
               <Popup className="pest-popup">
                 <div className="p-6 space-y-4 min-w-[240px]">
@@ -143,10 +183,59 @@ export const PestMap: React.FC = () => {
                   <h4 className="text-2xl font-display font-black text-emerald-950 flex items-center gap-3 uppercase tracking-tighter italic">
                     <Bug size={24} className={report.severity === 'high' ? "text-red-500" : "text-emerald-600"} /> {report.pest}
                   </h4>
-                  <div className="text-[10px] text-emerald-400 font-black border-t border-emerald-50 pt-4 uppercase tracking-[0.2em] italic">
-                    Reporter: {report.reporterName}<br/>
-                    Matrix Sync: {new Date(report.reportedAt).toLocaleDateString()}
-                  </div>
+                  
+                  {editingId === report.id ? (
+                    <div className="space-y-4 p-4 bg-emerald-50 rounded-3xl border border-emerald-100">
+                      <input 
+                        className="w-full bg-white border border-emerald-100 h-10 px-4 rounded-xl text-xs font-bold"
+                        value={editValues.crop}
+                        onChange={e => setEditValues({...editValues, crop: e.target.value})}
+                      />
+                      <input 
+                        className="w-full bg-white border border-emerald-100 h-10 px-4 rounded-xl text-xs font-bold"
+                        value={editValues.pest}
+                        onChange={e => setEditValues({...editValues, pest: e.target.value})}
+                      />
+                      <select 
+                        className="w-full bg-white border border-emerald-100 h-10 px-4 rounded-xl text-xs font-bold"
+                        value={editValues.severity}
+                        onChange={e => setEditValues({...editValues, severity: e.target.value as any})}
+                      >
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                      <button 
+                        onClick={saveEdit}
+                        className="w-full bg-emerald-600 text-white h-10 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg"
+                      >
+                        Commit Updates
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-[10px] text-emerald-400 font-black border-t border-emerald-50 pt-4 uppercase tracking-[0.2em] italic flex justify-between items-center">
+                      <div>
+                          Reporter: {report.reporterName}<br/>
+                          Matrix Sync: {new Date(report.reportedAt).toLocaleDateString()}
+                      </div>
+                      {report.reporterName.includes('Me') && (
+                          <div className="flex gap-2">
+                              <button 
+                                  onClick={() => startEdit(report)}
+                                  className="p-3 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+                              >
+                                  Edit
+                              </button>
+                              <button 
+                                  onClick={() => deleteReport(report.id)}
+                                  className="p-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                              >
+                                  <Trash2 size={16} />
+                              </button>
+                          </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </Popup>
             </Marker>

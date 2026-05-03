@@ -50,54 +50,54 @@ export const WelcomeScreen: React.FC = () => {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          className="bg-emerald-950/60 backdrop-blur-3xl p-12 sm:p-20 rounded-[100px] w-full text-center space-y-12 border border-emerald-400/30 shadow-[0_60px_120px_rgba(0,0,0,0.8)] my-auto"
+          className="bg-emerald-950/60 backdrop-blur-3xl p-8 sm:p-20 rounded-[60px] sm:rounded-[100px] w-full text-center space-y-8 sm:space-y-12 border border-emerald-400/30 shadow-[0_60px_120px_rgba(0,0,0,0.8)] my-auto"
         >
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <motion.div 
               initial={{ rotate: -10, scale: 0.8 }} 
               animate={{ rotate: 0, scale: 1 }} 
               transition={{ type: "spring", stiffness: 100, delay: 0.5 }}
-              className="w-32 h-32 bg-emerald-600 rounded-[40px] flex items-center justify-center mx-auto text-white shadow-[0_0_30px_#10b981] cursor-pointer hover:rotate-12 transition-transform border-4 border-white/20"
+              className="w-20 h-20 sm:w-32 sm:h-32 bg-emerald-600 rounded-[30px] sm:rounded-[40px] flex items-center justify-center mx-auto text-white shadow-[0_0_30px_#10b981] cursor-pointer hover:rotate-12 transition-transform border-4 border-white/20"
             >
-              <Sprout size={64} className="animate-pulse" strokeWidth={3} />
+              <Sprout className="w-10 h-10 sm:w-16 sm:h-16 animate-pulse" strokeWidth={3} />
             </motion.div>
             
             <div className="space-y-4">
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white tracking-tighter leading-[0.8] uppercase italic">
+              <h1 className="text-3xl sm:text-7xl lg:text-8xl font-display font-black text-white tracking-tighter leading-[0.8] uppercase italic">
                  AgriDoc <span className="text-emerald-400 block mt-2">Intelligence</span>
               </h1>
-              <div className="flex items-center justify-center gap-6">
-                  <div className="h-[2px] w-16 bg-emerald-600" />
-                  <p className="text-[12px] font-black uppercase tracking-[0.6em] text-emerald-300 italic">
+              <div className="flex items-center justify-center gap-4 sm:gap-6">
+                  <div className="h-[2px] w-8 sm:w-16 bg-emerald-600" />
+                  <p className="text-[10px] sm:text-[12px] font-black uppercase tracking-[0.4em] sm:tracking-[0.6em] text-emerald-300 italic">
                      The Future of Yield
                   </p>
-                  <div className="h-[2px] w-16 bg-emerald-600" />
+                  <div className="h-[2px] w-8 sm:w-16 bg-emerald-600" />
               </div>
             </div>
           </div>
 
-          <p className="text-xl sm:text-2xl text-emerald-50 font-black leading-relaxed max-w-2xl mx-auto italic opacity-90 uppercase tracking-tight">
+          <p className="text-base sm:text-2xl text-emerald-50 font-black leading-relaxed max-w-2xl mx-auto italic opacity-90 uppercase tracking-tight">
             Pioneering high-fidelity AI diagnostics, decentralized trade hubs, and autonomous biological asset management for the modern producer.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 pt-4 sm:pt-8">
               <button 
                   onClick={() => setPage('home')}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-white py-8 sm:py-10 text-3xl font-display font-black rounded-[48px] shadow-[0_20px_50px_rgba(16,185,129,0.4)] border-b-8 border-emerald-900 active:translate-y-2 transition-all flex items-center justify-center gap-6 group"
+                  className="bg-emerald-500 hover:bg-emerald-400 text-white py-6 sm:py-10 text-xl sm:text-3xl font-display font-black rounded-[32px] sm:rounded-[48px] shadow-[0_20px_50px_rgba(16,185,129,0.4)] border-b-8 border-emerald-900 active:translate-y-2 transition-all flex items-center justify-center gap-4 sm:gap-6 group"
               >
-                  START SYNC <ChevronRight className="group-hover:translate-x-4 transition-all" size={40} />
+                  START SYNC <ChevronRight className="w-6 h-6 sm:w-10 sm:h-10 group-hover:translate-x-4 transition-all" />
               </button>
-              <div className="bg-white/5 backdrop-blur-2xl rounded-[48px] border border-white/10 p-10 flex flex-col items-center justify-center text-white/70 space-y-3 shadow-inner">
-                   <p className="text-[11px] font-black uppercase tracking-[0.5em] mb-2 text-emerald-400 italic">Grid Status</p>
-                   <div className="flex items-center gap-4">
-                      <div className="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981] animate-pulse" />
-                      <span className="text-lg font-black tracking-widest uppercase">Nodes Online</span>
+              <div className="bg-white/5 backdrop-blur-2xl rounded-[32px] sm:rounded-[48px] border border-white/10 p-6 sm:p-10 flex flex-col items-center justify-center text-white/70 space-y-3 shadow-inner">
+                   <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-1 sm:mb-2 text-emerald-400 italic">Grid Status</p>
+                   <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981] animate-pulse" />
+                      <span className="text-sm sm:text-lg font-black tracking-widest uppercase">Nodes Online</span>
                    </div>
-                   <p className="text-[10px] font-mono opacity-50 tracking-widest">ENCRYPTED // v2.0.44</p>
+                   <p className="text-[9px] font-mono opacity-50 tracking-widest">ENCRYPTED // v2.0.44</p>
               </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-x-16 gap-y-6 text-[11px] font-black uppercase tracking-[0.5em] text-white/30 border-t border-white/5 pt-12">
+          <div className="flex flex-wrap justify-center gap-x-8 sm:gap-x-16 gap-y-4 text-[9px] sm:text-[11px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/30 border-t border-white/5 pt-8 sm:pt-12">
             <span className="hover:text-emerald-400 cursor-default transition-all hover:scale-110">Neural Scan</span>
             <span className="hover:text-emerald-400 cursor-default transition-all hover:scale-110">Bio-Ledger</span>
             <span className="hover:text-emerald-400 cursor-default transition-all hover:scale-110">Market Mesh</span>

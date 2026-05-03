@@ -3,12 +3,12 @@ import { Phone, Mail, MapPin, Award, ExternalLink, ChevronRight } from 'lucide-r
 import { motion } from 'motion/react';
 
 const EXPERTS = [
-  { id: 1, name: 'Dr. Tanvir Ahmmed', gender: 'male', degree: 'Ph.D. Plant Pathology', specialization: 'Rice Disease Specialist', location: 'Dhaka', phone: '+880-1234567', email: 'tanvir@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=tanvir1' },
-  { id: 2, name: 'Arjun Sharma', gender: 'male', degree: 'M.Sc. Agriculture', specialization: 'Soil Fertility Expert', location: 'Rajshahi', phone: '+880-1234568', email: 'arjun@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=arjun' },
-  { id: 3, name: 'Priya Das', gender: 'female', degree: 'B.Sc. Agriculture', specialization: 'Organic Farming', location: 'Sylhet', phone: '+880-1234569', email: 'priya@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=priya' },
-  { id: 4, name: 'Sompong Bun', gender: 'male', degree: 'M.Sc. Entomology', specialization: 'Pest Management', location: 'Bangkok', phone: '+66-0987654', email: 'sompong@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=sompong2' },
-  { id: 5, name: 'Sireena Thai', gender: 'female', degree: 'B.Sc. Botany', specialization: 'Greenhouse Tech', location: 'Chiang Mai', phone: '+66-0987655', email: 'sireena@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=sireena' },
-  { id: 6, name: 'Fatema Khatun', gender: 'female', degree: 'M.Sc. Horticulture', specialization: 'Fruit Crop Expert', location: 'Chittagong', phone: '+880-1234570', email: 'fatema@agridoc.ai', avatar: 'https://i.pravatar.cc/150?u=fatema' },
+  { id: 1, name: 'Dr. Tanvir Ahmmed', gender: 'male', degree: 'Ph.D. Plant Pathology', specialization: 'Rice Disease Specialist', location: 'Dhaka', phone: '+880-1234567', email: 'tanvir@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1921&auto=format&fit=crop' },
+  { id: 2, name: 'Arjun Sharma', gender: 'male', degree: 'M.Sc. Agriculture', specialization: 'Soil Fertility Expert', location: 'Rajshahi', phone: '+880-1234568', email: 'arjun@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop' },
+  { id: 3, name: 'Priya Das', gender: 'female', degree: 'B.Sc. Agriculture', specialization: 'Organic Farming', location: 'Sylhet', phone: '+880-1234569', email: 'priya@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop' },
+  { id: 4, name: 'Sompong Bun', gender: 'male', degree: 'M.Sc. Entomology', specialization: 'Pest Management', location: 'Bangkok', phone: '+66-0987654', email: 'sompong@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop' },
+  { id: 5, name: 'Sireena Thai', gender: 'female', degree: 'B.Sc. Botany', specialization: 'Greenhouse Tech', location: 'Chiang Mai', phone: '+66-0987655', email: 'sireena@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop' },
+  { id: 6, name: 'Fatema Khatun', gender: 'female', degree: 'M.Sc. Horticulture', specialization: 'Fruit Crop Expert', location: 'Chittagong', phone: '+880-1234570', email: 'fatema@agridoc.ai', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop' },
 ];
 
 export const Experts: React.FC = () => {
