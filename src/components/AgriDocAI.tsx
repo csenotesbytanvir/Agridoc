@@ -11,6 +11,8 @@ export const AgriDocAI: React.FC = () => {
   const { state, t } = useAgriDoc();
   const [activeTab, setActiveTab] = useState<'chat' | 'analyze' | 'soil'>('chat');
   
+  const hasApiKey = !!(state.apiKey || process.env.GEMINI_API_KEY);
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-32">
        <div className="space-y-4">
@@ -48,7 +50,7 @@ export const AgriDocAI: React.FC = () => {
         </button>
       </div>
 
-      {!state.apiKey ? (
+      {!hasApiKey ? (
         <div className="glass p-8 sm:p-16 rounded-[48px] sm:rounded-[64px] text-center space-y-8 sm:space-y-12 border-emerald-100 relative overflow-hidden group shadow-2xl bg-white/20">
           <div className="w-24 h-24 sm:w-40 sm:h-40 bg-emerald-600 rounded-[32px] sm:rounded-[56px] flex items-center justify-center mx-auto text-white shadow-2xl group-hover:scale-110 transition-transform border-b-8 border-emerald-900 group-hover:rotate-6 shrink-0">
             <Zap className="w-10 h-10 sm:w-16 sm:h-16" fill="currentColor" />
