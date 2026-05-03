@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Sprout, Droplets, Sun, Beaker, ChevronLeft } from 'lucide-react';
+import { Search, Filter, Sprout, Droplets, Sun, Beaker, ChevronLeft, Leaf, ShieldCheck, Zap } from 'lucide-react';
 import { PLANTS } from '../constants';
 import { Plant } from '../types';
 import { cn } from '../lib/utils';
@@ -58,40 +58,82 @@ export const PlantLibrary: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-8 sm:p-16 space-y-8 sm:space-y-12">
-            <p className="text-lg sm:text-2xl font-medium text-slate-600 leading-relaxed italic border-l-8 border-brand-green pl-6 sm:pl-10 max-w-4xl">
-              {selectedPlant.description}
-            </p>
+          <div className="p-8 sm:p-20 space-y-12 sm:space-y-20">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 sm:gap-20">
+              <div className="xl:col-span-2 space-y-12 sm:space-y-16">
+                <div className="space-y-6">
+                   <h2 className="text-[10px] font-black uppercase text-brand-green tracking-[0.4em] italic">Abstract / Biological Intent</h2>
+                   <p className="text-xl sm:text-3xl font-medium text-slate-600 leading-relaxed max-w-4xl border-l-[12px] border-brand-green pl-8 sm:pl-12 italic py-4">
+                     {selectedPlant.description}
+                   </p>
+                </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-              <InfoCard icon={<Droplets className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />} label="Hydro requirement" value={selectedPlant.watering} />
-              <InfoCard icon={<Sun className="w-5 h-5 sm:w-6 sm:h-6 text-brand-yellow" />} label="Photosynthesis" value={selectedPlant.sunlight} />
-              <InfoCard icon={<Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-brand-green" />} label="Growth Cycle" value={selectedPlant.season} />
-              <InfoCard icon={<Beaker className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />} label="Substrate PH" value={selectedPlant.soilPh} />
+                <div className="space-y-10">
+                   <h2 className="text-[10px] font-black uppercase text-slate-400 tracking-[0.4em]">Life Cycle Chronology</h2>
+                   <div className="relative pt-10">
+                      <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2" />
+                      <div className="flex justify-between relative z-10">
+                         {['Germination', 'Vegetative', 'Vascular', 'Mature'].map((step, idx) => (
+                           <div key={idx} className="flex flex-col items-center gap-4 bg-white group cursor-help">
+                              <div className={cn(
+                                "w-10 h-10 sm:w-16 sm:h-16 rounded-full border-4 border-white shadow-xl flex items-center justify-center transition-all",
+                                idx === 2 ? "bg-brand-green text-white scale-110" : "bg-slate-100 text-slate-400"
+                              )}>
+                                 <Sprout size={idx === 2 ? 32 : 24} />
+                              </div>
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 group-hover:text-brand-green transition-colors">{step}</span>
+                           </div>
+                         ))}
+                      </div>
+                   </div>
+                </div>
+              </div>
+
+              <div className="space-y-12 bg-slate-50 p-10 rounded-[64px] border border-slate-100 shadow-inner">
+                <div className="space-y-8">
+                  <h3 className="text-xl font-display font-black text-slate-950 uppercase tracking-tighter">Specimen Parameters</h3>
+                  <div className="space-y-6">
+                    <Parameter icon={<Droplets className="text-blue-500" />} label="Hydro" value={selectedPlant.watering} />
+                    <Parameter icon={<Sun className="text-amber-500" />} label="Lumina" value={selectedPlant.sunlight} />
+                    <Parameter icon={<Beaker className="text-purple-500" />} label="Substrate pH" value={selectedPlant.soilPh} />
+                    <Parameter icon={<Sprout className="text-brand-green" />} label="Seasonal Node" value={selectedPlant.season} />
+                  </div>
+                </div>
+
+                <div className="space-y-6 pt-10 border-t border-slate-200">
+                  <h2 className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">Symbiotic Synergy</h2>
+                  <div className="flex flex-wrap gap-3">
+                    {selectedPlant.companionPlants.map(p => (
+                      <div key={p} className="flex items-center gap-3 bg-white pl-2 pr-4 py-2 rounded-full border border-slate-200 shadow-sm hover:translate-y-[-2px] transition-all">
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-brand-green">
+                           <Leaf size={16} />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 pt-8 sm:pt-12 border-t border-slate-50">
-                <div className="space-y-4 sm:space-y-6">
-                  <h3 className="text-2xl sm:text-3xl font-display font-black text-slate-900 uppercase tracking-tighter decoration-red-500 underline decoration-4 underline-offset-8">Threat Anomalies</h3>
-                  <div className="flex flex-wrap gap-2 sm:gap-4">
+            <div className="bg-red-950 p-10 sm:p-20 rounded-[64px] sm:rounded-[80px] text-white space-y-12 relative overflow-hidden">
+               <div className="relative z-10 space-y-8">
+                  <div className="space-y-2">
+                    <h3 className="text-3xl sm:text-6xl font-display font-black tracking-tighter uppercase leading-none">Diagnostic Anomalies</h3>
+                    <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] text-red-400 flex items-center gap-3">
+                      <ShieldCheck size={20} /> Identity Verification Required for High-Risk Pathogens
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {selectedPlant.diseases.map(d => (
-                      <span key={d} className="px-4 sm:px-6 py-2 sm:py-3 bg-red-50 text-red-600 rounded-[18px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest border border-red-100 shadow-sm whitespace-nowrap">
-                        {d}
-                      </span>
+                       <div key={d} className="bg-white/10 backdrop-blur-xl p-6 rounded-[32px] border border-white/10 hover:bg-white/20 transition-all cursor-pointer group">
+                          <p className="text-[10px] font-black uppercase text-red-300 mb-2 tracking-widest group-hover:text-white transition-colors">Pathogen Node</p>
+                          <p className="text-lg font-bold group-hover:translate-x-2 transition-transform">{d}</p>
+                       </div>
                     ))}
                   </div>
-                </div>
-
-                <div className="space-y-4 sm:space-y-6">
-                  <h3 className="text-2xl sm:text-3xl font-display font-black text-slate-900 uppercase tracking-tighter decoration-brand-green underline decoration-4 underline-offset-8">Symbiotic Nodes</h3>
-                  <div className="flex flex-wrap gap-2 sm:gap-4">
-                    {selectedPlant.companionPlants.map(p => (
-                      <span key={p} className="px-4 sm:px-6 py-2 sm:py-3 bg-emerald-50 text-brand-green rounded-[18px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest border border-emerald-100 shadow-sm whitespace-nowrap">
-                        {p}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+               </div>
+               <div className="absolute right-[-10%] top-[-10%] w-[40%] h-[40%] bg-red-600/20 rounded-full blur-[100px]" />
             </div>
           </div>
         </div>
@@ -146,36 +188,59 @@ export const PlantLibrary: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               onClick={() => setSelectedPlant(plant)}
-              className="bg-white p-5 sm:p-6 rounded-[40px] sm:rounded-[56px] flex flex-col xs:flex-row gap-6 sm:gap-8 cursor-pointer hover:shadow-2xl transition-all border border-slate-100 shadow-xl group border-l-8 border-l-slate-200 hover:border-l-brand-green"
+              className="bg-white p-5 sm:p-6 rounded-[48px] sm:rounded-[64px] flex flex-col xs:flex-row gap-6 sm:gap-10 cursor-pointer hover:shadow-2xl transition-all border border-slate-100 shadow-xl group relative overflow-hidden"
             >
               <div className="relative shrink-0 flex justify-center sm:block">
-                <img 
-                    src={plant.image} 
-                    alt={plant.name} 
-                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-[24px] sm:rounded-[40px] object-cover shadow-xl border-4 border-white group-hover:scale-105 group-hover:-rotate-3 transition-transform"
-                    referrerPolicy="no-referrer"
-                />
-                <div className="absolute -top-3 -right-3 bg-brand-yellow text-brand-green w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg border-4 border-white">
-                    <Sprout className="w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="w-28 h-28 sm:w-40 sm:h-40 rounded-[32px] sm:rounded-[48px] overflow-hidden shadow-2xl border-4 border-white group-hover:scale-105 transition-transform relative z-10">
+                  <img 
+                      src={plant.image} 
+                      alt={plant.name} 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="absolute -top-3 -right-3 bg-brand-yellow text-brand-green w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shadow-lg border-4 border-white z-20 group-hover:rotate-12 transition-transform">
+                    <Sprout size={24} />
                 </div>
               </div>
-              <div className="flex-1 space-y-2 sm:space-y-3 py-1 sm:py-2">
-                <div className="flex items-center justify-between gap-4">
-                  <h3 className="text-xl sm:text-3xl font-display font-black text-slate-900 uppercase tracking-tighter leading-tight">{plant.name}</h3>
-                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-brand-green px-3 sm:px-4 py-1.5 rounded-full border border-emerald-100 shadow-sm shrink-0">
-                    {plant.type}
-                  </span>
+              <div className="flex-1 space-y-4 py-2 relative z-10">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-2xl sm:text-3xl font-display font-black text-slate-900 uppercase tracking-tighter leading-tight">{plant.name}</h3>
+                    <span className="text-[8px] font-black uppercase tracking-[0.2em] bg-emerald-50 text-brand-green px-3 py-1 rounded-full border border-emerald-100">
+                      {plant.type}
+                    </span>
+                  </div>
+                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] italic">{plant.scientificName}</p>
                 </div>
-                <p className="text-[9px] sm:text-[11px] font-black text-slate-300 uppercase tracking-[0.2em] sm:tracking-[0.3em] italic">{plant.scientificName}</p>
-                <div className="flex items-center gap-4 sm:gap-6 pt-1 sm:pt-2">
-                  <span className="flex items-center gap-2 text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
-                    <Droplets className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" /> {plant.watering}
-                  </span>
-                  <span className="flex items-center gap-2 text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
-                    <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-yellow" /> {plant.sunlight}
-                  </span>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-[8px] font-black uppercase text-slate-400 tracking-widest leading-none">Hydro Stats</p>
+                    <div className="h-1 bg-blue-50 rounded-full overflow-hidden">
+                       <div className="h-full bg-blue-400" style={{ width: plant.watering === 'high' ? '100%' : plant.watering === 'moderate' ? '60%' : '30%' }} />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-[8px] font-black uppercase text-slate-400 tracking-widest leading-none">Photo Period</p>
+                    <div className="h-1 bg-amber-50 rounded-full overflow-hidden">
+                       <div className="h-full bg-amber-400" style={{ width: plant.sunlight === 'full sun' ? '100%' : '50%' }} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-50 flex items-center gap-4">
+                    <div className="flex -space-x-2">
+                       {[1, 2, 3].map(i => (
+                         <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-100" />
+                       ))}
+                    </div>
+                    <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest">Synergy Protocol Active</p>
                 </div>
               </div>
+              
+              {/* Technical Gradient Background */}
+              <div className="absolute right-[-20%] bottom-[-20%] w-[60%] h-[60%] bg-brand-green/5 rounded-full blur-[60px] group-hover:bg-brand-green/10 transition-colors" />
             </motion.div>
           ))}
         </AnimatePresence>
@@ -183,6 +248,18 @@ export const PlantLibrary: React.FC = () => {
     </div>
   );
 };
+
+const Parameter = ({ icon, label, value }: any) => (
+  <div className="flex items-center justify-between group">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
+      <span className="text-[10px] uppercase font-black text-slate-400 tracking-widest">{label}</span>
+    </div>
+    <span className="text-sm font-black text-slate-900 uppercase tracking-tighter">{value}</span>
+  </div>
+);
 
 const InfoCard = ({ icon, label, value }: any) => (
   <div className="bg-slate-50 p-8 rounded-[40px] border border-slate-100 shadow-inner space-y-3 transition-colors hover:bg-white hover:shadow-xl group">

@@ -138,6 +138,60 @@ export async function analyzePlantDisease(apiKey: string, base64Image: string, l
   }
 }
 
+export async function analyzeSoilData(apiKey: string, base64Image: string, language: string) {
+  try {
+    const ai = getAI(apiKey);
+    
+    const promptText = `Analyze this soil test report or soil picture. 
+    You MUST return JSON with these exact keys:
+    "ph": numeric pH or "Unknown",
+    "nitrogen": Nitrogen level (e.g., Low, Medium, High),
+    "phosphorus": Phosphorus level,
+    "potassium": Potassium level,
+    "moisture": estimated moisture or "Unknown",
+    "problems": array of strings describing detected problems,
+    "solutions": array of strings describing recommended solutions/fertilizers,
+    "idealCrops": array of crops that would grow well.
+    
+    IMPORTANT: Respond strictly in ${language === 'bn' ? 'Bengali (বাংলা)' : 'English'}.
+    Do NOT include markdown markers like \`\`\`json. Return only the raw JSON.`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: [{
+        role: "user",
+        parts: [
+          { inlineData: { mimeType: "image/jpeg", data: base64Image } },
+          { text: promptText }
+        ]
+      }],
+      config: {
+        responseMimeType: "application/json",
+      }
+    });
+
+    let rawText = "";
+    try {
+      rawText = (response.text || "").trim();
+    } catch (e) {
+      if (response.candidates && response.candidates.length > 0) {
+        rawText = response.candidates[0].content?.parts?.find(p => p.text)?.text || "";
+      }
+    }
+    
+    if (rawText.includes('```')) {
+      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+    }
+
+    if (!rawText) throw new Error("Empty soil response");
+
+    return JSON.parse(rawText);
+  } catch (error) {
+    console.error("Soil Analysis Error:", error);
+    throw error;
+  }
+}
+
 export async function validateApiKey(apiKey: string) {
   try {
     // If we have a system key, verification always passes

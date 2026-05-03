@@ -83,43 +83,51 @@ const Dashboard = () => {
       )}
 
       {/* Hero Interace (AGRI DIAGNOSTICS FIRST) */}
-      <section className="bg-emerald-950 p-12 lg:p-20 rounded-[80px] relative overflow-hidden group shadow-[0_40px_100px_rgba(6,95,70,0.3)] border-b-8 border-emerald-900">
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-16">
-          <div className="flex-1 space-y-10">
+      <section className="bg-emerald-950 p-8 sm:p-12 lg:p-20 rounded-[40px] sm:rounded-[80px] relative overflow-hidden group shadow-[0_40px_100px_rgba(6,95,70,0.3)] border-b-8 border-emerald-900 min-h-[400px] sm:min-h-[500px] flex items-center">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 sm:gap-16 w-full">
+          <div className="flex-1 space-y-8 sm:space-y-10">
             <div className="flex items-center gap-4">
                <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_15px_#10b981] animate-pulse"></div>
-               <span className="text-[10px] font-black uppercase text-emerald-400 tracking-[0.4em] leading-none">
-                  Neural Scan Interface v4.0
+               <span className="text-[8px] sm:text-[10px] font-black uppercase text-emerald-400 tracking-[0.2em] sm:tracking-[0.4em] leading-none">
+                  Neural Scan Interface v4.0 • UPLINK_ACTIVE
                </span>
             </div>
-            <h2 className="text-6xl sm:text-7xl lg:text-9xl font-display font-black leading-[0.8] tracking-tighter uppercase text-white">
-              VISUAL <span className="block text-emerald-400 mt-4">DIAGNOSTICS</span>
+            <h2 className="text-4xl sm:text-7xl lg:text-9xl font-display font-black leading-[0.9] sm:leading-[0.8] tracking-tighter uppercase text-white">
+              VISUAL <span className="block text-emerald-400 mt-2 sm:mt-4 underline decoration-emerald-500/20 underline-offset-8">DIAGNOSTICS</span>
             </h2>
-            <p className="text-emerald-100/60 text-xl max-w-xl leading-relaxed font-medium italic">
-               Upload or capture botanical samples for high-fidelity AI synthesis of pathogens and treatment protocols.
+            <p className="text-emerald-100/60 text-lg sm:text-xl max-w-xl leading-relaxed font-medium italic">
+               Establishing high-fidelity cognitive bridges for botanical synthesis and precise cultivar diagnostics.
             </p>
-            <div className="flex flex-wrap gap-6 pt-4">
+            <div className="flex flex-wrap gap-4 sm:gap-6 pt-4">
               <button 
                 onClick={() => setPage('agridoc-ai')}
-                className="btn-primary px-16 py-8 text-lg"
+                className="btn-primary px-10 sm:px-16 py-5 sm:py-8 text-base sm:text-lg"
               >
-                <Zap size={28} /> {t.dashboard.btnAi}
+                <Zap size={24} className="sm:w-7 sm:h-7" /> {t.dashboard.btnAi}
               </button>
               <button 
                 onClick={() => setPage('offline-toolkit')}
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white px-16 py-8 rounded-[40px] text-lg font-black uppercase tracking-widest transition-all border border-white/10 flex items-center gap-4"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white px-10 sm:px-16 py-5 sm:py-8 rounded-[30px] sm:rounded-[40px] text-base sm:text-lg font-black uppercase tracking-widest transition-all border border-white/10 flex items-center gap-4"
               >
-                <Database size={28} className="text-emerald-400" /> Local Database
+                <Database size={24} className="sm:w-7 sm:h-7 text-emerald-400" /> Local Flux
               </button>
             </div>
           </div>
           
-          <div className="hidden xl:block relative">
-            <div className="w-96 h-96 bg-white/5 rounded-[100px] border border-white/10 rotate-12 flex items-center justify-center animate-pulse">
-                <ShieldCheck size={200} className="text-white/10" />
+          <div className="hidden xl:block relative group">
+            <div className="w-[450px] h-[450px] bg-white/5 rounded-[120px] border border-emerald-500/10 rotate-12 flex items-center justify-center animate-pulse overflow-hidden relative">
+                {/* Simulated Scanline Effect */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[size:100%_4px] pointer-events-none" />
+                <ShieldCheck size={260} className="text-emerald-400/20 group-hover:scale-110 transition-transform duration-1000" />
             </div>
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500 rounded-[48px] shadow-2xl flex items-center justify-center rotate-3 animate-float border-4 border-emerald-950">
-                <TreeDeciduous size={80} className="text-white" />
+            {/* Draggable-like Data Tags */}
+            <div className="absolute -top-6 -right-6 px-6 py-3 bg-emerald-500 text-white rounded-2xl shadow-2xl skew-x-[-12deg] flex items-center gap-3">
+               <Zap size={14} fill="white" />
+               <span className="text-[10px] font-black uppercase tracking-widest leading-none">Sync: 99%</span>
+            </div>
+            <div className="absolute -bottom-6 -left-6 px-6 py-3 bg-white text-emerald-950 rounded-2xl shadow-2xl skew-x-[12deg] flex items-center gap-3">
+               <Globe size={14} className="text-emerald-500" />
+               <span className="text-[10px] font-black uppercase tracking-widest leading-none italic">Lat: 23.8N • Lon: 90.4E</span>
             </div>
           </div>
         </div>
