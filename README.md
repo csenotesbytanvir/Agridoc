@@ -1,7 +1,6 @@
 # 🌾 AgriDoc Intelligence
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Gemini API](https://img.shields.io/badge/AI-Gemini%20API-blue)](https://ai.google.dev/gemini)
 [![TLS 1.3](https://img.shields.io/badge/Security-TLS%201.3-green)](https://en.wikipedia.org/wiki/Transport_Layer_Security)
 [![Offline Ready](https://img.shields.io/badge/Offline-Ready-brightgreen)](#manual-proxy)
 
